@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var Track = require('../../models/csn/Track');
+var Episode = require('../models/Episode');
 
 router.get('/:id', function (req, res, next) {
-  Track.findById(req.params.id, function (err, track) {
+  Episode.findById(req.params.id, function (err, track) {
     if (err) return next(err);
     res.json(track);
   })

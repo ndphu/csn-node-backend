@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-var mongoDB = 'mongodb://19november.freeddns.org:5050/csndb';
+var mongoDB = 'mongodb://localhost:27017/gm';
 mongoose.connect(mongoDB);
 var db = mongoose.connection;
 

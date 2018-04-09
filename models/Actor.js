@@ -1,0 +1,10 @@
+var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
+
+var ActorSchema = new mongoose.Schema({
+  title: String
+});
+
+ActorSchema.plugin(mongoosePaginate);
+
+module.exports = mongoose.model('Actor', ActorSchema, 'actors');
