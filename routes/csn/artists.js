@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var Artist = require('../models/Artist');
-var Track = require('../models/Track');
+var Artist = require('../../models/csn/Artist');
+var Track = require('../../models/csn/Track');
 
 
 const sort = {title: 1};

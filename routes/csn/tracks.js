@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Track = require('../models/Track');
+var Track = require('../../models/csn/Track');
 
 router.get('/:id', function (req, res, next) {
   Track.findById(req.params.id, function (err, track) {

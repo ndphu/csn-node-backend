@@ -1,7 +1,7 @@
-require('../db/DB');
+require('../../db/DB');
 var Set = require("collections/set");
-var Track = require('../models/Track');
-var Artist = require('../models/Artist');
+var Track = require('../../models/csn/Track');
+var Artist = require('../../models/csn/Artist');
 
 console.log('Hello');
 const artistSet = new Set();
