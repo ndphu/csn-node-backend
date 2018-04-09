@@ -1,20 +1,9 @@
 var createError = require('http-errors');
 var express = require('express');
-var mongoose = require('mongoose');
+require('./db/DB');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-mongoose.Promise = global.Promise;
-
-var mongoDB = 'mongodb://19november.freeddns.org:5050/csndb';
-mongoose.connect(mongoDB);
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connectino error:'));
-db.once('open', function () {
-  console.log('connect');
-});
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
