@@ -1,0 +1,6 @@
+---
+applications:
+- name: csn-node-backend
+  memory: 64M
+  instances: 1
+  random-route: true
