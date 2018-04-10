@@ -1,6 +1,7 @@
 ---
 applications:
-- name: csn-node-backend
-  memory: 64M
+- name: gm-node-backend
+  memory: 128M
   instances: 1
   random-route: true
+
