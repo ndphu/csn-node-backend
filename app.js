@@ -12,6 +12,8 @@ var categoryRouter = require('./routes/category');
 var movieRouter = require('./routes/movie');
 var serieRouter = require('./routes/serie');
 var episodeRouter = require('./routes/episode');
+var homeRouter = require('./routes/home');
+var searchRouter = require('./routes/search');
 
 var app = express();
 app.use(cors());
@@ -27,6 +29,8 @@ app.use('/api/category', categoryRouter);
 app.use('/api/movie', movieRouter);
 app.use('/api/serie', serieRouter);
 app.use('/api/episode', episodeRouter);
+app.use('/api/home', homeRouter);
+app.use('/api/search', searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
