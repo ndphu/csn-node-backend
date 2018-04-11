@@ -2,8 +2,9 @@ var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 
 var ActorSchema = new mongoose.Schema({
-  title: String,
-  key: String
+  _id: mongoose.Schema.Types.ObjectId,
+  key: String,
+  title: String
 });
 
 ActorSchema.plugin(mongoosePaginate);
