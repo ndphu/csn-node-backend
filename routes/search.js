@@ -3,6 +3,8 @@ var router = express.Router();
 var Actor = require('../models/Actor');
 var Movie = require('../models/Movie');
 var Serie = require('../models/Serie');
+var vungTvClient = require('../client/VungTv');
+var cheerio = require('cheerio');
 
 router.get('/q/:query', function (req, res, next) {
   const query = req.params.query;
@@ -12,7 +14,7 @@ router.get('/q/:query', function (req, res, next) {
   var response = {};
   var promises = [];
   
-  promises.push(new Promise(function(resolve) {
+  promises.push(new Promise(function (resolve) {
     Actor.paginate({
       title: new RegExp('.*' + query + '.*', 'i')
     }, {
@@ -25,7 +27,7 @@ router.get('/q/:query', function (req, res, next) {
     });
   }));
   
-  promises.push(new Promise(function(resolve) {
+  promises.push(new Promise(function (resolve) {
     Movie.paginate({
       normTitle: new RegExp('.*' + query + '.*', 'i')
     }, {
@@ -39,7 +41,7 @@ router.get('/q/:query', function (req, res, next) {
     });
   }));
   
-  promises.push(new Promise(function(resolve) {
+  promises.push(new Promise(function (resolve) {
     Serie.paginate({
       title: new RegExp('.*' + query + '.*', 'i')
     }, {
@@ -55,6 +57,34 @@ router.get('/q/:query', function (req, res, next) {
   
   Promise.all(promises).then(function () {
     res.json(response);
+  })
+});
+
+
+router.get('/remote/q/:query', function (req, res, next) {
+  const query = req.params.query;
+  const postData = 'q=' + query;
+  console.log(postData);
+  
+  vungTvClient.search(postData).then(function (result) {
+    const items = [];
+    const $ = cheerio.load(JSON.parse(result).data_html);
+    $('a').each(function () {
+      var a = $(this);
+      items.push({
+        title: $('.content .title-film', this).text(),
+        subTitle: $('.content p', this).text(),
+        poster: $('.image', this).attr('style').split(/[()]/)[1],
+        link: a.attr('href')
+      })
+    });
+    res.send(items);
+  }).catch(function (reason) {
+    res.status(500);
+    res.send({
+      query: query,
+      err: reason
+    })
   })
 });
 
