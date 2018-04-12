@@ -16,8 +16,11 @@
     "feignjs": "0.0.6",
     "http-errors": "~1.6.2",
     "lodash": "latest",
+    "moment": "^2.22.0",
     "mongoose": "latest",
     "mongoose-paginate": "latest",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "normalize-strings": "^1.1.0",
+    "unorm": "^1.4.1"
   }
 }

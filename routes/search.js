@@ -63,18 +63,18 @@ router.get('/q/:query', function (req, res, next) {
 
 router.get('/remote/q/:query', function (req, res, next) {
   const query = req.params.query;
-  const postData = 'q=' + query;
+  const postData = 'status=search_page&q=' + query;
   console.log(postData);
   
   vungTvClient.search(postData).then(function (result) {
     const items = [];
     const $ = cheerio.load(JSON.parse(result).data_html);
-    $('a').each(function () {
-      var a = $(this);
+    $('.film-small').each(function () {
+      const a = $(this);
       items.push({
-        title: $('.content .title-film', this).text(),
-        subTitle: $('.content p', this).text(),
-        poster: $('.image', this).attr('style').split(/[()]/)[1],
+        title: a.find('.title-film-small .title-film').text(),
+        subTitle: a.find('.title-film-small p').text(),
+        poster: a.find('.poster-film-small').attr('style').split(/[()]/)[1],
         link: a.attr('href')
       })
     });

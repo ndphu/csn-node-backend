@@ -9,6 +9,10 @@ var vungTvDescription = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/x-www-form-urlencoded'
     }
+  },
+  getItem: {
+    method: 'GET',
+    uri: '{path}'
   }
 };
 
