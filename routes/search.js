@@ -5,14 +5,15 @@ var Movie = require('../models/Movie');
 var Serie = require('../models/Serie');
 var vungTvClient = require('../client/VungTv');
 var cheerio = require('cheerio');
+const cookieService = require('../services/CookieService');
 
 router.get('/q/:query', function (req, res, next) {
   const query = req.params.query;
   const page = req.query.page ? parseInt(req.query.page) : 1;
   const limit = req.query.size ? parseInt(req.query.size) : 32;
   
-  var response = {};
-  var promises = [];
+  const response = {};
+  const promises = [];
   
   promises.push(new Promise(function (resolve) {
     Actor.paginate({
@@ -64,9 +65,10 @@ router.get('/q/:query', function (req, res, next) {
 router.get('/remote/q/:query', function (req, res, next) {
   const query = req.params.query;
   const postData = 'status=search_page&q=' + query;
+  console.log(cookieService.getCookieHeader());
   console.log(postData);
   
-  vungTvClient.search(postData).then(function (result) {
+  vungTvClient.search(postData).then((result) => {
     const items = [];
     const $ = cheerio.load(JSON.parse(result).data_html);
     $('.film-small').each(function () {
@@ -79,7 +81,8 @@ router.get('/remote/q/:query', function (req, res, next) {
       })
     });
     res.send(items);
-  }).catch(function (reason) {
+  }).catch((reason) => {
+    console.log(reason);
     res.status(500);
     res.send({
       query: query,

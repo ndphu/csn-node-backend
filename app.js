@@ -15,6 +15,7 @@ var episodeRouter = require('./routes/episode');
 var homeRouter = require('./routes/home');
 var searchRouter = require('./routes/search');
 var requestRouter = require('./routes/request');
+var manageRouter = require('./routes/manage');
 
 var app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ app.use('/api/episode', episodeRouter);
 app.use('/api/home', homeRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/request', requestRouter);
+app.use('/api/manage', manageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

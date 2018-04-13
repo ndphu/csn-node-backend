@@ -1,11 +1,14 @@
-var mongoose = require('mongoose');
-var mongoosePaginate = require('mongoose-paginate');
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
-var EpisodeSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+const EpisodeSchema = new mongoose.Schema({
+  id: String,
   title: String,
+  subTitle: String,
+  order: Number,
   videoSource: String,
-  serieId: String
+  crawUrl: String,
+  itemId: String,
 });
 
 EpisodeSchema.plugin(mongoosePaginate);

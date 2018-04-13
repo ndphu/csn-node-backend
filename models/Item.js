@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 
-var RequestItem = new mongoose.Schema({
+var Item = new mongoose.Schema({
   id: String,
   title: String,
   normTitle: String,
@@ -18,9 +18,10 @@ var RequestItem = new mongoose.Schema({
   directors: Array,
   actors: Array,
   genres: Array,
-  countries: Array
+  countries: Array,
+  createdAt: { type: Date, default: Date.now }
 });
 
-RequestItem.plugin(mongoosePaginate);
+Item.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('RequestItem', RequestItem, 'request_items');
+module.exports = mongoose.model('Item', Item, 'items');

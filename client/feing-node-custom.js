@@ -1,7 +1,8 @@
-var Args = require('args-js');
-var _ = require('lodash');
-var http = require('http');
-var URL = require('url');
+const Args = require('args-js');
+const _ = require('lodash');
+const  http = require('http');
+const  URL = require('url');
+const cookieService = require('../services/CookieService');
 
 
 function FeignNodeClient() {
@@ -20,7 +21,10 @@ FeignNodeClient.prototype.request = function (request) {
   
   var promise = new Promise(function (resolve, reject) {
     const _option = _.cloneDeep(options);
-    _option.headers = Object.assign(options.headers, request.options.headers);
+    _option.headers = Object.assign(options.headers,
+      request.options.headers,
+      {'Cookie': cookieService.getCookieHeader()});
+    console.log('Sending request with cookie: ' + _option.headers.Cookie);
     var req = http.request(_option, function (res) {
       
       var body = '';

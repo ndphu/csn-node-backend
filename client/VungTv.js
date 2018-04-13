@@ -1,22 +1,31 @@
-var feignjs = require('feignjs');
-var RequestClient = require('./feing-node-custom');
+const feignjs = require('feignjs');
+const RequestClient = require('./feing-node-custom');
 
-var vungTvDescription = {
+const vungTvDescription = {
   search: {
     method: 'POST',
     uri: '/ajax/search',
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     }
   },
   getItem: {
     method: 'GET',
-    uri: '{path}'
+    uri: '{path}',
+    headers: {
+    }
+  },
+  authorize: {
+    method: 'POST',
+    uri: '/',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
   }
 };
 
-var vungTvClient = feignjs.builder()
+const vungTvClient = feignjs.builder()
   .client(new RequestClient({
     defaults: {
       headers: {

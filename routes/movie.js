@@ -1,13 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var Movie = require('../models/Movie');
+var Item = require('../models/Item');
 var http = require('http');
-const querystring = require('querystring');
 
 router.get('/:id', function (req, res, next) {
-  Movie.findById(req.params.id, function (err, track) {
-    if (err) return next(err);
-    res.json(track);
+  Item.find({
+    id: req.params.id,
+  }, (err, item) => {
+    if (err) {
+      res.status(500);
+      res.send({err: err});
+    } else {
+      res.send(item);
+    }
   })
 });
 
@@ -21,7 +27,7 @@ router.get('/:id/forceReload', function (req, res, next) {
         input: movie.playUrl
       }
     ]);
-
+    
     console.log(requestBody);
     const options = {
       host: '19november.freeddns.org',
