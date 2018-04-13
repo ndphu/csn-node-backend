@@ -1,23 +1,23 @@
-var express = require('express');
-var cors = require('cors')
+const express = require('express');
+const cors = require('cors')
 
 require('./db/DB');
 
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const indexRouter = require('./routes/index');
+const actorRouter = require('./routes/actor');
+const categoryRouter = require('./routes/category');
+const movieRouter = require('./routes/movie');
+const serieRouter = require('./routes/serie');
+const episodeRouter = require('./routes/episode');
+const homeRouter = require('./routes/home');
+const searchRouter = require('./routes/search');
+const requestRouter = require('./routes/request');
+const manageRouter = require('./routes/manage');
+const itemRouter = require('./routes/item');
 
-var indexRouter = require('./routes/index');
-var actorRouter = require('./routes/actor');
-var categoryRouter = require('./routes/category');
-var movieRouter = require('./routes/movie');
-var serieRouter = require('./routes/serie');
-var episodeRouter = require('./routes/episode');
-var homeRouter = require('./routes/home');
-var searchRouter = require('./routes/search');
-var requestRouter = require('./routes/request');
-var manageRouter = require('./routes/manage');
-
-var app = express();
+const app = express();
 app.use(cors());
 
 app.use(logger('dev'));
@@ -35,6 +35,7 @@ app.use('/api/home', homeRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/request', requestRouter);
 app.use('/api/manage', manageRouter);
+app.use('/api/item', itemRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
