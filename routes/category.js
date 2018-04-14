@@ -10,43 +10,21 @@ router.get('/:id', function (req, res, next) {
   })
 });
 
-router.get('/:id/movie', function (req, res, next) {
+router.get('/:id/items', function (req, res, next) {
   Category.findById(req.params.id, function (err, category) {
     if (err)return next(err);
     Item.paginate({
-      categories: category.title,
-      type: 'MOVIE',
+      genres: category.title,
     }, {
-      select: 'id title categories poster',
+      select: 'id title genres actors poster',
       sort: {createdAt: 1},
       page: req.query.page ? parseInt(req.query.page) : 1,
       limit: req.query.size ? parseInt(req.query.size) : 32
-    }, function (err, movies) {
+    }, function (err, items) {
       if (err) return next(err);
       res.json({
         category: category,
-        movies: movies
-      });
-    })
-  });
-});
-
-router.get('/:id/serie', function (req, res, next) {
-  Category.findById(req.params.id, function (err, category) {
-    if (err)return next(err);
-    Item.paginate({
-      categories: category.title,
-      type: 'SERIE',
-    }, {
-      select: 'id title categories poster',
-      sort: {createdAt: 1},
-      page: req.query.page ? parseInt(req.query.page) : 1,
-      limit: req.query.size ? parseInt(req.query.size) : 32
-    }, function (err, movies) {
-      if (err) return next(err);
-      res.json({
-        category: category,
-        movies: movies
+        items: items
       });
     })
   });

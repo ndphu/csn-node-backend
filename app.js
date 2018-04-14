@@ -10,12 +10,12 @@ const actorRouter = require('./routes/actor');
 const categoryRouter = require('./routes/category');
 const movieRouter = require('./routes/movie');
 const serieRouter = require('./routes/serie');
-const episodeRouter = require('./routes/episode');
+const episodeRouter = require('./routes/Episode');
 const homeRouter = require('./routes/home');
-const searchRouter = require('./routes/search');
+const searchRouter = require('./routes/Search');
 const requestRouter = require('./routes/request');
 const manageRouter = require('./routes/manage');
-const itemRouter = require('./routes/item');
+const itemRouter = require('./routes/Item');
 
 const app = express();
 app.use(cors());

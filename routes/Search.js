@@ -1,20 +1,22 @@
-var express = require('express');
-var router = express.Router();
-var Actor = require('../models/Actor');
-var Movie = require('../models/Movie');
-var Serie = require('../models/Serie');
-var vungTvClient = require('../client/VungTv');
-var cheerio = require('cheerio');
+const express = require('express');
+const router = express.Router();
+const Actor = require('../models/Actor');
+const Movie = require('../models/Movie');
+const Serie = require('../models/Serie');
+const Item = require('../models/Item');
+const vungTvClient = require('../client/VungTv');
+const cheerio = require('cheerio');
 const cookieService = require('../services/CookieService');
+const crypto = require('crypto');
 
 router.get('/q/:query', function (req, res, next) {
   const query = req.params.query;
   const page = req.query.page ? parseInt(req.query.page) : 1;
   const limit = req.query.size ? parseInt(req.query.size) : 32;
-  
+
   const response = {};
   const promises = [];
-  
+
   promises.push(new Promise(function (resolve) {
     Actor.paginate({
       title: new RegExp('.*' + query + '.*', 'i')
@@ -27,7 +29,7 @@ router.get('/q/:query', function (req, res, next) {
       resolve();
     });
   }));
-  
+
   promises.push(new Promise(function (resolve) {
     Movie.paginate({
       normTitle: new RegExp('.*' + query + '.*', 'i')
@@ -41,7 +43,7 @@ router.get('/q/:query', function (req, res, next) {
       resolve();
     });
   }));
-  
+
   promises.push(new Promise(function (resolve) {
     Serie.paginate({
       title: new RegExp('.*' + query + '.*', 'i')
@@ -55,7 +57,7 @@ router.get('/q/:query', function (req, res, next) {
       resolve();
     });
   }));
-  
+
   Promise.all(promises).then(function () {
     res.json(response);
   })
@@ -67,7 +69,7 @@ router.get('/remote/q/:query', function (req, res, next) {
   const postData = 'status=search_page&q=' + query;
   console.log(cookieService.getCookieHeader());
   console.log(postData);
-  
+
   vungTvClient.search(postData).then((result) => {
     const items = [];
     const $ = cheerio.load(JSON.parse(result).data_html);
@@ -80,7 +82,24 @@ router.get('/remote/q/:query', function (req, res, next) {
         link: a.attr('href')
       })
     });
-    res.send(items);
+
+    const promises = items.map(item => new Promise((resolve, reject) => {
+      const hash = crypto.createHash('md5').update(item.link).digest("hex");
+      Item.find({hash: hash}, function (err, items) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({
+            title: item.title,
+            subTitle: item.subTitle,
+            poster: item.poster,
+            link: item.link,
+            itemId: items.length > 0 ? items[0]._id : null,
+          })
+        }
+      })
+    }));
+    Promise.all(promises).then(items => res.send(items));
   }).catch((reason) => {
     console.log(reason);
     res.status(500);

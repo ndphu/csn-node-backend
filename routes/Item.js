@@ -9,7 +9,7 @@ router.get('/:id', function (req, res, next) {
     if (err) {
       console.log(err);
       res.status(500);
-      res.json({'err': err});
+      res.json({err: err});
     } else if (item) {
       res.json(item);
     } else {
