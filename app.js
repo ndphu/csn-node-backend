@@ -1,20 +1,18 @@
 const express = require('express');
-const cors = require('cors')
-
+const cors = require('cors');
+require('./utils/StringUtils');
 require('./db/DB');
 
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const indexRouter = require('./routes/index');
-const actorRouter = require('./routes/actor');
-const categoryRouter = require('./routes/category');
-const movieRouter = require('./routes/movie');
-const serieRouter = require('./routes/serie');
+const indexRouter = require('./routes/Index');
+const actorRouter = require('./routes/Actor');
+const genreRouter = require('./routes/Genre');
 const episodeRouter = require('./routes/Episode');
-const homeRouter = require('./routes/home');
+const homeRouter = require('./routes/Home');
 const searchRouter = require('./routes/Search');
-const requestRouter = require('./routes/request');
-const manageRouter = require('./routes/manage');
+const requestRouter = require('./routes/Request');
+const manageRouter = require('./routes/Manage');
 const itemRouter = require('./routes/Item');
 
 const app = express();
@@ -27,9 +25,7 @@ app.use(cookieParser());
 
 app.use('/api', indexRouter);
 app.use('/api/actor', actorRouter);
-app.use('/api/category', categoryRouter);
-app.use('/api/movie', movieRouter);
-app.use('/api/serie', serieRouter);
+app.use('/api/genre', genreRouter);
 app.use('/api/episode', episodeRouter);
 app.use('/api/home', homeRouter);
 app.use('/api/search', searchRouter);

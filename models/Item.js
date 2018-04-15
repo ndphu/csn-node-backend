@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var mongoosePaginate = require('mongoose-paginate');
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
-var Item = new mongoose.Schema({
+const Item = new mongoose.Schema({
   id: String,
   title: String,
   normTitle: String,

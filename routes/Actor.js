@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var Actor = require('../models/Actor');
-var Movie = require('../models/Movie');
+const express = require('express');
+const router = express.Router();
+const Actor = require('../models/Actor');
+const Item = require('../models/Item');
 
 router.get('/:id', function (req, res, next) {
   Actor.findById(req.params.id, function (err, track) {
@@ -19,20 +19,20 @@ router.get('/byKey/:actorKey', function (req, res, next) {
   });
 });
 
-router.get('/:id/movie', function (req, res, next) {
+router.get('/:id/items', function (req, res, next) {
   Actor.findById(req.params.id, function (err, actor) {
     if (err) return next(err);
-    Movie.paginate({
+    Item.paginate({
       actors: actor.title
     }, {
-      select: 'id title categories poster',
-      sort: {title: 1},
+      select: 'id title subTitle genres actors poster',
+      sort: {createdAt: -1},
       page: req.query.page ? parseInt(req.query.page) : 1,
       limit: req.query.size ? parseInt(req.query.size) : 32
     }, function (err, movies) {
       res.json({
         actor: actor,
-        movies: movies
+        items: movies
       });
     });
   })

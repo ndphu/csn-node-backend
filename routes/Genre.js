@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var Category = require('../models/Category');
-var Item = require('../models/Item');
+const express = require('express');
+const router = express.Router();
+const Category = require('../models/Category');
+const Item = require('../models/Item');
 
 router.get('/:id', function (req, res, next) {
   Category.findById(req.params.id, function (err, track) {
@@ -16,8 +16,8 @@ router.get('/:id/items', function (req, res, next) {
     Item.paginate({
       genres: category.title,
     }, {
-      select: 'id title genres actors poster',
-      sort: {createdAt: 1},
+      select: 'id title subTitle genres actors poster',
+      sort: {createdAt: -1},
       page: req.query.page ? parseInt(req.query.page) : 1,
       limit: req.query.size ? parseInt(req.query.size) : 32
     }, function (err, items) {

@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var Episode = require('../models/Episode');
+const express = require('express');
+const router = express.Router();
+const Episode = require('../models/Episode');
 const crawService = require('../services/CrawService');
 
 router.get('/:id', (req, res, next) => {

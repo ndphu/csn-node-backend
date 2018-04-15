@@ -1,4 +1,4 @@
-const crawClient = require('../client/crawClient');
+const crawClient = require('../client/CrawClient');
 
 class CrawService {
   crawEpisode(episode) {
