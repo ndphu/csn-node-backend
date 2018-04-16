@@ -22,7 +22,8 @@ router.post('', function (req, res, next) {
       res.status(200);
       res.send(item);
     } else {
-      VungTV.getItem(url.split('vung.tv')[1]).then(function (result) {
+      let itemPath = url.split('vung.tv')[1];
+      VungTV.getItem(itemPath).then(function (result) {
         const $ = cheerio.load(result);
         const title = $('.title-film-detail-1').text().trim();
         const subTitle = $('.title-film-detail-2').text().trim();

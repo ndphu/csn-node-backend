@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var mongoosePaginate = require('mongoose-paginate');
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
-var ActorSchema = new mongoose.Schema({
+const ActorSchema = new mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   key: String,
   title: String
@@ -9,4 +9,4 @@ var ActorSchema = new mongoose.Schema({
 
 ActorSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Actor', ActorSchema, 'actors');
+module.exports = mongoose.model('Movie', ActorSchema, 'actors');

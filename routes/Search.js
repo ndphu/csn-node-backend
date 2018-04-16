@@ -17,7 +17,7 @@ router.get('/q/:query', function (req, res, next) {
   const promises = [];
 
   promises.push(new Promise(function (resolve, reject) {
-    Actor.paginate({
+    Movie.paginate({
       title: new RegExp('.*' + query + '.*', 'i')
     }, {
       sort: {title: 1},
