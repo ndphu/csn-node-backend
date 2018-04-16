@@ -3,8 +3,8 @@ const cheerio = require('cheerio');
 const VungTV = require('../client/VungTv');
 const router = express.Router();
 const Item = require('../models/Item');
-const Episode = require('../models/Episode');
 const crypto = require('crypto');
+const crawService = require('../services/CrawService');
 const moment = require('moment');
 
 router.post('', function (req, res, next) {
@@ -73,10 +73,10 @@ router.post('', function (req, res, next) {
           }
         });
         new Item({
-          title: title,
-          normTitle: title.latinise(),
-          subTitle: subTitle,
-          normSubTitle: subTitle.latinise(),
+          title: title ? title : subTitle,
+          normTitle: title ? title.latinise() : subTitle.latinise(),
+          subTitle: subTitle ? subTitle : title,
+          normSubTitle: subTitle ? subTitle.latinise() : title.latinise(),
           poster: poster,
           bigPoster: bigPoster,
           source: url,
@@ -93,7 +93,7 @@ router.post('', function (req, res, next) {
         }).save().then(function (item) {
           if (type === 'SERIE') {
             Promise.all([new Promise((resolve, reject) => {
-              crawSerie(item, resolve, reject);
+              crawService.crawSerie(item).then(resolve).catch(reject);
             })]).then(()=>{res.send(item)}).catch((err) => {
               res.status(500);
               res.send({err:err});
@@ -118,25 +118,6 @@ router.post('', function (req, res, next) {
 });
 
 
-function crawSerie(item, resolve, reject) {
-  VungTV.getItem(item.playUrl.split('vung.tv')[1]).then((html) => {
-    const $ = cheerio.load(html);
-    const promises = [];
-    $('.episode-main a').each((i, a) => {
-      console.log(i);
-      console.log($(a).attr('href'));
-      promises.push(new Promise((resolve, reject) => {
-        new Episode({
-          title: 'Tập ' + (i + 1),
-          subTitle: 'Episode ' + (i + 1),
-          order: i,
-          crawUrl: $(a).attr('href'),
-          itemId: item._id + '',
-        }).save().then(resolve).catch(reject);
-      }));
-    });
-    Promise.all(promises).then(resolve).catch(reject);
-  })
-}
+
 
 module.exports = router;

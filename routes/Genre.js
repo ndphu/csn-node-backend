@@ -4,17 +4,17 @@ const Category = require('../models/Category');
 const Item = require('../models/Item');
 
 router.get('/:id', function (req, res, next) {
-  Category.findById(req.params.id, function (err, track) {
+  Category.findById(req.params.id, function (err, genre) {
     if (err) return next(err);
-    res.json(track);
+    res.json(genre);
   })
 });
 
 router.get('/:id/items', function (req, res, next) {
-  Category.findById(req.params.id, function (err, category) {
+  Category.findById(req.params.id, (err, genre) => {
     if (err)return next(err);
     Item.paginate({
-      genres: category.title,
+      genres: genre.title,
     }, {
       select: 'id title subTitle genres actors poster',
       sort: {createdAt: -1},
@@ -23,7 +23,7 @@ router.get('/:id/items', function (req, res, next) {
     }, function (err, items) {
       if (err) return next(err);
       res.json({
-        category: category,
+        genre: genre,
         items: items
       });
     })
@@ -35,9 +35,9 @@ router.get('/', function (req, res, next) {
       sort: {title: 1},
       page: 1,
       limit: 1000
-  }, function (err, categories) {
+  }, (err, genres) => {
     if (err) return next(err);
-    res.json(categories);
+    res.json(genres);
   })
 });
 

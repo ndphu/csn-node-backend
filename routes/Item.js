@@ -53,6 +53,23 @@ router.get('/:id/reload', (req, res) => {
   });
 });
 
+router.get('/:id/reloadEpisodeList', (req, res) => {
+  Item.findById(req.params.id, (err, item) => {
+    if (err) {
+      res.status(500);
+      res.send({err: err});
+    } else {
+      crawService.crawSerie(item).then((episodes) => {
+        res.json(episodes);
+      }).catch(err => {
+        res.status(500);
+        res.send({err: err});
+      })
+    }
+  });
+  
+});
+
 reloadItem = (item) => {
   return new Promise((resolve, reject) => {
     console.log('reload request for item ' + item._id);
@@ -77,7 +94,9 @@ reloadItem = (item) => {
         }
       })
     } else if (item.type === 'SERIE') {
-      resolve();
+      crawService.crawSerie(item).then(() => {
+        resolve(item);
+      }).catch((err) => reject(err));
     }
   });
 };

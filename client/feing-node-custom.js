@@ -47,8 +47,8 @@ FeignNodeClient.prototype.request = function (request) {
       return reject({status: 0, message: e});
     });
 
-    console.log(request.parameters);
     if (_option.method !== 'GET' && request.parameters) {
+      console.log(request.parameters);
       req.write(request.parameters);
     }
 
